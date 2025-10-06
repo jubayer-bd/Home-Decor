@@ -4,8 +4,8 @@ import ProductCard from "../../Component/ProductCard";
 import useProducts from "../../Hooks/useProducts";
 
 const Home = () => {
-  const [products, loading, error] = useProducts();
-  // console.log(products);
+  const  { products, loading, error } = useProducts();
+  console.log(products);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong: {error.message}</p>;

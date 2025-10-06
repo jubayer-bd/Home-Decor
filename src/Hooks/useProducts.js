@@ -19,7 +19,7 @@ const useProducts = () => {
       });
   }, []);
 
-  return [products, loading, error]  ;
+  return { products, loading, error };
 };
 
 export default useProducts;
