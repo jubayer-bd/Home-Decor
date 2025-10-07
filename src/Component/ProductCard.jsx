@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
         <p>Category: {category}</p>
         <p>Price: ${price}</p>
         <div className='card-actions justify-end '>
-          <Link to={`/product/${id}`} className= ' px-4 py-2 rounded-lg border border-blue-500 hover:bg-black hover:text-white'>
+          <Link to={`/products/${id}`} className= ' px-4 py-2 rounded-lg border border-blue-500 hover:bg-black hover:text-white'>
             View Details
           </Link>
         </div>

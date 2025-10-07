@@ -5,6 +5,7 @@ import Layout from '../Layouts/Layout';
 import Products from '../Pages/Products/Products';
 import Errorpage from '../Pages/ErrorPage/Errorpage';
 import WishList from '../Pages/WishList/WishList';
+import ProductDetail from '../Pages/ProductDetail/ProductDetail';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: () => fetch('./data.json'),
+        
       },
       {
         path: '/products',
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path:'/wishList',
         element:<WishList/>
+      },
+      {
+        path:'/products/:id',
+        element:<ProductDetail/>
       }
     ],
   },
