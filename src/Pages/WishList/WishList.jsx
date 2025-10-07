@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const WishList = () => {
   const [wishList, setWishList] = useState([]);
   const [order, setOrder] = useState("none");
 
-  // Load wishlist from localStorage when component mounts
+  // Load wishlist from localStorage
   useEffect(() => {
     const savedList = JSON.parse(localStorage.getItem("wishList")) || [];
     setWishList(savedList);
   }, []);
 
-  // Function to handle removing an item
+  // Remove item
   const handleRemove = (id) => {
     const updatedList = wishList.filter((item) => item.id !== id);
     setWishList(updatedList);
-    localStorage.setItem("wishList", JSON.stringify(updatedList)); // update localStorage
+    localStorage.setItem("wishList", JSON.stringify(updatedList));
   };
 
   // Sorting logic
@@ -28,8 +38,18 @@ const WishList = () => {
     }
   };
 
-  // Get the sorted list
   const displayedList = sortedItem();
+
+  // ✅ Chart data: Total price by category
+  const totalsByCategory = wishList.reduce((acc, product) => {
+    acc[product.category] = (acc[product.category] || 0) + product.price;
+    return acc;
+  }, {});
+
+  const chartData = Object.entries(totalsByCategory).map(([category, total]) => ({
+    category,
+    total,
+  }));
 
   return (
     <div className="space-y-6 max-w-11/12 mx-auto py-10">
@@ -75,7 +95,7 @@ const WishList = () => {
                 <p className="text-sm text-gray-600">{p.description}</p>
               </div>
 
-              <div className="card-actions justify-end  flex items-center text-right">
+              <div className="card-actions justify-end flex items-center text-right">
                 <p className="font-semibold mb-2">${p.price}</p>
                 <button
                   onClick={() => handleRemove(p.id)}
@@ -88,16 +108,34 @@ const WishList = () => {
           </div>
         ))}
 
-        {/* Show empty message */}
+        {/* Empty Message */}
         {wishList.length === 0 && (
           <p className="text-center text-gray-500 py-10">
             Your wishlist is empty 😔
           </p>
         )}
       </div>
+
+      {/* Chart Section */}
+      {chartData.length > 0 && (
+        <div className="space-y-3">
+          <h1 className="text-xl font-semibold">Wishlist Summary</h1>
+          <div className="bg-base-100 border rounded-xl p-4 h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="category" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="total" fill="#8884d8" name="Total Price" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default WishList;
-
